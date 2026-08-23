@@ -23,6 +23,10 @@ This is intended for practitioners with experience in distributed systems, concu
 
 The label key is intentionally absent and will not be published until qualifying responses are locked. A response may find SSDD clearer, a baseline clearer, no material difference, or insufficient evidence.
 
+## Public outreach copy
+
+The exact LinkedIn post is available in [`LINKEDIN-POST-COPY.md`](LINKEDIN-POST-COPY.md). It directs reviewers only to this minimal public review repository.
+
 ## Scope limits
 
 This is a local policy-reference review. It makes no claim about physical CXL, FPGA, silicon, latency, jitter, percentiles, throughput, scaling, production behavior, or universal superiority.
