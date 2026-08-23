@@ -1,35 +1,46 @@
 # LinkedIn Post — Copy and Paste
 
 ```text
-Independent systems reviewers requested — a deliberately non-promotional comparison
+**A bounded shared-state comparison produced a tie. That is why we are asking engineers to inspect it.**
 
-We are testing a narrow question about shared-state engineering:
+We implemented three separate local policy references against one fixed contract:
 
-When the same event set can arrive in different orders, or contain a late, corrupted, or conflicting record, which policy makes the decision to accept, reject, or defer the next shared checkpoint easiest for an engineer to inspect?
+• SSDD canonical commit containment
+• versioned CAS/retry with an explicit canonical candidate snapshot
+• a single-writer sequencer with an explicit canonical queue drain
 
-We compared three bounded local policy references against the same 133-case contract:
+The same **133 cases** were given to every arm:
 
-• SSDD
-• CAS/retry
-• A single-writer sequencer
+• 1 positive control
+• 128 shuffled arrival-order permutations
+• conflicting event identity
+• late/incomplete source
+• proof corruption
+• candidate-state corruption
 
-The honest current result is not “SSDD wins.”
+The result was exact within this bounded local contract:
 
-All three met the tested containment and arrival-order contract once the conventional alternatives explicitly included canonical candidate or queue-drain policies. There is no declared winner.
+• **SSDD:** 129 accepted, 3 rejected, 1 deferred; 1 accepted checkpoint hash across 128 arrival permutations.
+• **CAS/retry:** 129 accepted, 3 rejected, 1 deferred; 1 accepted checkpoint hash across 128 arrival permutations.
+• **Single-writer sequencer:** 129 accepted, 3 rejected, 1 deferred; 1 accepted checkpoint hash across 128 arrival permutations.
 
-The remaining question is practical: from a blinded evidence bundle, can an engineer determine the governing rule, material condition, prior valid checkpoint, and policy surface more clearly in one approach than in the others?
+Every row retained the same required evidence fields: manifest hash, disposition, reason, decision record, checkpoint reference, and prior-valid checkpoint reference.
 
-This invitation is specifically for independent systems engineers, distributed-systems engineers, memory-system/chiplet/CXL architects, verification or reliability practitioners, and systems researchers. This is not general engagement: the task requires judging real retry, idempotency, ordering, shared-state, and diagnostic-policy trade-offs.
+This was not designed to make the baselines fail. The comparison held the event set, fault cases, expected disposition, manifest contract, and evidence fields constant. The conventional alternatives were allowed to be serious: each made its canonicalization policy explicit. They matched SSDD on the declared containment and arrival-order semantics.
 
-You do not need to agree with SSDD. A result favoring CAS/retry, a sequencer, or no meaningful difference is equally useful.
+So the remaining question is not “does SSDD work?” and it is not “is SSDD automatically needed because CXL or shared state exists?”
 
-No contact or permission is required. Open the public self-service packet, verify its checksums, and submit a blinded response directly through GitHub:
+The remaining question is practical: **when a checkpoint is accepted, rejected, or deferred, which retained policy record lets an engineer identify the governing rule, material condition, prior valid checkpoint, and policy surface to change with the least ambiguity?**
+
+We are looking specifically for independent distributed-systems engineers, concurrency/runtime engineers, memory-system/chiplet/CXL architects, and verification/reliability practitioners to review 18 integrity-checked A/B/C records. You may conclude that SSDD is clearer, a baseline is clearer, or that there is no meaningful difference. All three outcomes are useful.
+
+No contact or permission is required. Verify the packet and submit a blinded response directly:
 
 https://github.com/uniqueteamyemen/ssdd-blinded-review
 
-The A/B/C label key remains withheld until responses are locked. We will publish the aggregate outcome within this bounded scope, including a no-difference or baseline-favoring result.
+Scope boundary: this is a local policy-reference result. It is not a latency, jitter, throughput, scaling, physical-CXL, FPGA, silicon, production, or superiority claim.
 
-#DistributedSystems #SystemsEngineering #ComputerArchitecture #CXL #Verification #OpenResearch
+#DistributedSystems #Concurrency #SystemsEngineering #ComputerArchitecture #CXL #Verification #OpenResearch
 ```
 
 **Direct response form:** <https://github.com/uniqueteamyemen/ssdd-blinded-review/issues/new?template=blinded-review-response.md>
